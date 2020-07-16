@@ -1,14 +1,22 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import Loader from "react-redux-loading";
+
 import { handleInitialData } from "../actions/shared";
+import Dashboard from "./Dashboard";
 
 class App extends Component {
   componentDidMount() {
     this.props.handleInitialData();
   }
   render() {
-    return <div>Starter Code</div>;
+    return (
+      <div>
+        <Loader />
+        <Dashboard />
+      </div>
+    );
   }
 }
 

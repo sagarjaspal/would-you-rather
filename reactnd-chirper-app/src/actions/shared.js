@@ -1,4 +1,5 @@
 import * as API from "../utils/api";
+import { showLoading, hideLoading } from "react-redux-loading";
 import { setAuthedUser } from "../actions/authUser";
 
 const AUTHED_USER = "tylermcginnis";
@@ -10,10 +11,13 @@ export const receiveData = (users, tweets) => ({
   tweets,
 });
 
-export const handleInitialData = () => (dispatch) =>
+export const handleInitialData = () => (dispatch) => {
+  dispatch(showLoading());
   API.getInitialData()
     .then(({ users, tweets }) => {
       dispatch(receiveData(users, tweets));
       dispatch(setAuthedUser(AUTHED_USER));
+      dispatch(hideLoading());
     })
-    .catch(() => alert("An error occured while fetching initial data."));
+    .catch((e) => alert("An error occured while fetching initial data." + e));
+};
