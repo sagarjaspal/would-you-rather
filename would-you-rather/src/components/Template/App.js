@@ -1,9 +1,12 @@
 import React from "react";
+import Login from "../Organisms/Login";
+import Home from "../Organisms/Home";
 
 function App() {
   return (
-    <div className="App">
-      <h2>Would you rather?</h2>
+    <div>
+      <Login />
+      <Home />
     </div>
   );
 }
