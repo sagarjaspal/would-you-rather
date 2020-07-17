@@ -1,5 +1,5 @@
 import { RECEIVE_DATA } from "../actions/shared";
-import { TOGGLE_LIKE } from "../actions/tweets";
+import { TOGGLE_LIKE, SAVE_TWEET } from "../actions/tweets";
 
 const tweets = (state = {}, action) => {
   switch (action.type) {
@@ -18,6 +18,26 @@ const tweets = (state = {}, action) => {
               : state[action.id].likes.concat([action.authedUser]),
         },
       };
+    case SAVE_TWEET: {
+      const { tweet } = action;
+      let modifiedParent = {};
+
+      if (tweet.replyingTo !== null) {
+        const parent = tweet.replyingTo;
+        modifiedParent = {
+          [parent]: {
+            ...state[parent],
+            replies: state[parent].replies.concat(tweet.id),
+          },
+        };
+      }
+
+      return {
+        ...state,
+        [tweet.id]: tweet,
+        ...modifiedParent,
+      };
+    }
     default:
       return state;
   }
