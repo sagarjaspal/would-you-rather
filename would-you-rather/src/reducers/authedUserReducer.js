@@ -3,7 +3,7 @@ import { SET_USER, REMOVE_USER } from "../actions/authedUserActions";
 const authedUser = (state = null, action) => {
   switch (action.type) {
     case SET_USER:
-      return Object.assign({}, action.user);
+      return action.user;
     case REMOVE_USER:
       return {};
     default:
