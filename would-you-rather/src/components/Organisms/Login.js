@@ -23,8 +23,10 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { authedUser } = this.state;
-    const { setUser } = this.props;
+    const { setUser, history, location } = this.props;
+    const { from } = location.state;
     setUser(authedUser);
+    history.replace(from);
   };
 
   render() {
@@ -50,7 +52,7 @@ class Login extends Component {
               ))}
             </select>
             <button
-              className="btn btn-outline-light"
+              className="btn btn-info"
               type="submit"
               disabled={authedUser === ""}
             >

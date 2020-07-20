@@ -5,7 +5,7 @@ const authedUser = (state = null, action) => {
     case SET_USER:
       return action.user;
     case REMOVE_USER:
-      return {};
+      return null;
     default:
       return state;
   }

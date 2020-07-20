@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 
 import { handleGetAllQuestions } from "../../actions/questionActions";
 import QuestionList from "../Molecules/QuestionList";
+import { Redirect } from "react-router-dom";
 
 class Home extends Component {
   state = {
@@ -11,8 +12,10 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    const { handleGetAllQuestions } = this.props;
-    handleGetAllQuestions();
+    const { handleGetAllQuestions, questions } = this.props;
+    if (!questions || Object.keys(questions).length === 0) {
+      handleGetAllQuestions();
+    }
   }
 
   setUnanswered = (e) => {
@@ -30,9 +33,19 @@ class Home extends Component {
   };
 
   render() {
-    const { answered, unanswered, users } = this.props;
+    const { answered, unanswered, users, authedUser, location } = this.props;
+    if (!authedUser || authedUser === null) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: location },
+          }}
+        />
+      );
+    }
+
     const { tabToRender } = this.state;
-    console.log(tabToRender);
     const questions =
       tabToRender && tabToRender === "unanswered" ? unanswered : answered;
 
@@ -64,11 +77,15 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ questions, users }, { authedUser }) => {
+const mapStateToProps = ({ questions, users, authedUser }) => {
   let answered = {};
   let unanswered = {};
 
-  if (Object.keys(questions).length !== 0 && Object.keys(users).length !== 0) {
+  if (
+    Object.keys(questions).length !== 0 &&
+    Object.keys(users).length !== 0 &&
+    authedUser !== null
+  ) {
     //insert Question objects for answered questions to 'answered' object
     const userAnswers = users[authedUser].answers;
     Object.keys(userAnswers).map((id) => (answered[id] = questions[id]));
@@ -84,6 +101,7 @@ const mapStateToProps = ({ questions, users }, { authedUser }) => {
   return {
     answered,
     unanswered,
+    questions,
     authedUser,
     users,
   };

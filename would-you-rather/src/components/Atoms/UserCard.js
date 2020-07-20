@@ -12,7 +12,7 @@ const UserCard = (props) => {
           <img src={avatar} alt="User Avatar" />
         </div>
         <div className="col-md-1"></div>
-        <div className="card-body col-md-6">{children}</div>
+        <div className="card-body">{children}</div>
       </div>
     </div>
   );
